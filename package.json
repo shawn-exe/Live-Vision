@@ -7,14 +7,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma:generate":"npx dotenv -e .env -- prisma generate",
-    "migrate:dev":"npx dotenv -e .env -- prisma migrate dev",
-    "prisma:studio":"npx dotenv -e .env -- prisma studio",
-    "migrate":"npx dotenv -e .env -- prisma migrate deploy"
+    "prisma:generate": "npx dotenv -e .env -- prisma generate",
+    "migrate:dev": "npx dotenv -e .env -- prisma migrate dev",
+    "prisma:studio": "npx dotenv -e .env -- prisma studio",
+    "migrate": "npx dotenv -e .env -- prisma migrate deploy"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
     "@nextui-org/react": "^2.2.10",
     "@prisma/client": "^5.10.2",
+    "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
@@ -23,8 +25,10 @@
     "next": "14.1.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.51.0",
     "tailwind-merge": "^2.2.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20",

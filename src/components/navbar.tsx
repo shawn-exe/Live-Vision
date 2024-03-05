@@ -4,8 +4,7 @@ import Logo from "./logo";
 
 const Navbar = () => {
   return (
-    <>
-      <div className="w-full px-10 h-24 bg-black sticky top-0">
+      <div className="w-full px-10 h-24 bg-black fixed top-0">
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-between items-center h-full">
             <Logo />
@@ -34,7 +33,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-    </>
+  
   );
 };
 
