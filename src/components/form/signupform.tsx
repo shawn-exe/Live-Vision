@@ -3,12 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
+import {useRouter} from "next/navigation"
 import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -27,17 +26,35 @@ const FormSchema = z.object({
     message:'Password do not match'
 })
 
-export default function loginform() {
+export default function signupform() {
+const router=useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: "",
+      email: '',
+      password:''
     },
   })
 
-  const onSubmit =(values:z.infer<typeof FormSchema>)=>
+  const onSubmit =async (values:z.infer<typeof FormSchema>)=>
   {
-    console.log(values)
+    const response =await fetch('/api/registeruser', {
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email:values.email,
+        password:values.password
+      })
+    })
+    if(response.ok)
+    {
+      router.push('/login');
+    }
+    else{
+      console.log("user cannot be added");
+    }
   }
  
 

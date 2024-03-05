@@ -14,15 +14,18 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
+    "@next-auth/prisma-adapter": "^1.0.7",
     "@nextui-org/react": "^2.2.10",
     "@prisma/client": "^5.10.2",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
+    "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "framer-motion": "^11.0.8",
     "lucide-react": "^0.344.0",
     "next": "14.1.1",
+    "next-auth": "^4.24.6",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.0",
@@ -31,6 +34,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
