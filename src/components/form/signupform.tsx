@@ -62,7 +62,7 @@ const router=useRouter();
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
         <div className="space-y-2">
-      <h3 className="text-center">Sign Up</h3>
+      <h3 className="text-center font-sans font-bold text-blue-800 text-2xl">Sign Up</h3>
         <FormField
           control={form.control}
           name="email"
@@ -107,7 +107,7 @@ const router=useRouter();
 
         </div>
 
-        <Button className="w-full mt-6" type="submit">Login</Button>
+        <Button className="w-full mt-6" type="submit">Create account</Button>
       </form>
 
        <div className="mx-auto my-4 flex w-full items-center justify-evenly">or</div>

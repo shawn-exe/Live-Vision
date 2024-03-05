@@ -6,7 +6,7 @@ interface AuthlayoutProps{//This is to remove the type warning of next js;
 
 const Authlayout: FC<AuthlayoutProps> = ({children}) => {
   return (
-    <div className='bg-slate-200 p-10 w-1/3 rounded-md'>
+    <div className='bg-slate-200 p-10 w-1/3 rounded-md mt-10'>
       {children}
     </div>
   )

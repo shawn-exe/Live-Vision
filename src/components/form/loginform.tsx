@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { useToast } from "@/components/ui/use-toast"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -27,10 +28,12 @@ const FormSchema = z.object({
 
 export default function loginform() {
   const router=useRouter ();
+  const { toast } = useToast()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       email: "",
+      password:"",
     },
   })
 
@@ -44,9 +47,17 @@ export default function loginform() {
     });
     if(signIndata?.error)
     {
-      console.log(signIndata.error);
+      toast({
+        description: "Invalid Credentials...Try again",
+        variant:"destructive"
+      })
     }else{
-      router.push('/admin');
+      router.refresh();
+      router.push('/mainpage');
+      toast({
+        description: "Login Successfull",
+        variant:"positive"
+      })
     }
   }
  
@@ -55,7 +66,7 @@ export default function loginform() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
         <div className="space-y-2">
-            <h3 className="text-center">Login</h3>
+            <h3 className="text-center font-sans font-bold text-blue-600 text-2xl">Sign In</h3>
         <FormField
           control={form.control}
           name="email"
