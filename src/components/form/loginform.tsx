@@ -60,13 +60,11 @@ export default function loginform() {
       })
     }
   }
- 
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
         <div className="space-y-2">
-            <h3 className="text-center font-sans font-bold text-blue-600 text-2xl">Sign In</h3>
+            <h3 className="text-center font-sans font-bold text-blue-600 text-2xl">Log In</h3>
         <FormField
           control={form.control}
           name="email"

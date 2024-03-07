@@ -46,12 +46,6 @@ export  const authOptions: NextAuthOptions ={
       })
     ],
     callbacks: {
-      async signIn({ user, account, profile, email, credentials }) {
-        return true
-      },
-      async redirect({ url, baseUrl }) {
-        return baseUrl
-      },
       async jwt({ token, user }) {
         if (user)
         {
@@ -69,7 +63,6 @@ export  const authOptions: NextAuthOptions ={
           email:token.email
         }
       }
-      return session  
-},
+    },
 }
 }

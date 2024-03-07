@@ -4,7 +4,7 @@ import LogoLV from '../images/logoLV.png';
 export default function Logo() {
   return (
     <div>
-      <Image src={LogoLV} alt="Logo" className='h-30 w-40'/>
+      <Image src={LogoLV} alt="Logo" className='h-24 w-36'/>
     </div>
   );
 }

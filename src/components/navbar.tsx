@@ -4,28 +4,28 @@ import Logo from "./logo";
 
 const Navbar = () => {
   return (
-      <div className="w-full px-10 h-24 bg-black fixed top-0">
+    <div className="w-full h-20 fixed top-0 bg-black bg-opacity-80 backdrop-blur-lg flex items-center justify-between px-10 text-white">
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-between items-center h-full">
             <Logo />
             <ul className="flex gap-20 text-white">
             <li>
-                <Link href="/about">
+                <Link href="/">
                   <p>Product</p>
                 </Link>
               </li>
               <li>
-                <Link href="/about">
+                <Link href="/">
                   <p>Docs</p>
                 </Link>
               </li>
               <li>
-                <Link href="/services">
+                <Link href="/">
                   <p>About Us</p>
                 </Link>
               </li>
               <li>
-                <Link href="/contacts">
+                <Link href="/">
                   <p>Contact Us</p>
                 </Link>
               </li>

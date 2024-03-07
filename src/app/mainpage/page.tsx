@@ -10,7 +10,7 @@ async function page () {
     )
   }
   return (
-    <div>please login</div>
+    <div className='text-2xl text-red-600 font-extrabold'>please login</div>
   )
 }
 

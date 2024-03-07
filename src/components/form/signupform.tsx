@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import {useRouter} from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/use-toast"
 import {
   Form,
   FormControl,
@@ -28,6 +29,7 @@ const FormSchema = z.object({
 
 export default function signupform() {
 const router=useRouter();
+const { toast } = useToast()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -51,9 +53,16 @@ const router=useRouter();
     if(response.ok)
     {
       router.push('/login');
+      toast({
+        description: "User  Successfully Registered...Please login",
+        variant:"positive"
+      })
     }
     else{
-      console.log("user cannot be added");
+      toast({
+        description: "User already Exist..Please login",
+        variant:"destructive"
+      })
     }
   }
  
