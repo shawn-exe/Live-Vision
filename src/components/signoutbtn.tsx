@@ -6,7 +6,7 @@ import { signOut } from 'next-auth/react'
 function signoutbtn() {
   return (
     <div>   
-        <Button variant={"destructive"} onClick={()=>signOut({
+        <Button variant={"destructive"} size={"xsm"} onClick={()=>signOut({
             redirect:true,
             callbackUrl: `${window.location.origin}/login`,
         })}>LogOut</Button>

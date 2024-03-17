@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-       <main className="h-screen w-full bg-slate-950">
+       <main className="h-screen w-full bg-slate-950 overflow-y-auto">
           
           {children}
         </main>
