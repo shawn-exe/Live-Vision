@@ -1,15 +1,17 @@
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Navbar from "@/components/navbar";
+
 export default function Home() {
   return (
-    <>
-    <p className="w-full text-center">Content loading..</p>
+    <div className="flex flex-col space-y-1">
+    <Navbar/>
     <Link href={"/login"}>
       <Button variant={"grey"}>
         Login
       </Button></Link>
-    </>
+    </div>
   )
 }
 
