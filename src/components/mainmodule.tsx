@@ -27,7 +27,8 @@ const MainModule = (props: Props) => {
     if(model && webcamRef.current && webcamRef.current.video && webcamRef.current.video.readyState === 4)
     {
       const predictions: DetectedObject[] = await model.detect(webcamRef.current.video);
-      console.log(predictions);
+      canvaselement(canvasRef,webcamRef);
+      drawOnCanvas(predictions,canvasRef.current?.getContext('2d'))
     }
   }
 
@@ -37,10 +38,7 @@ const MainModule = (props: Props) => {
         runPrediction();
       },100)
       return()=>clearInterval(interval);//To clear the previous intervals.. incase of reload
-    },[webcamRef.current,model])//Mirrored state is not added here
-  
-   
-  
+    },[webcamRef.current,model])
   return (
     <div className='w-full flex flex-col items-center gap-2'>
         <div className='relative'> 
@@ -54,3 +52,37 @@ const MainModule = (props: Props) => {
 }
 
 export default MainModule
+
+function canvaselement(canvasRef: React.RefObject<HTMLCanvasElement>, webcamRef: React.RefObject<Webcam>) {
+  const canvas = canvasRef.current;
+  const video = webcamRef.current?.video;
+  if((canvas && video))
+  {
+    const{videoWidth,videoHeight}=video;
+    canvas.width=videoWidth;
+    canvas.height=videoHeight;
+  }
+}
+
+function drawOnCanvas(
+    predictions: DetectedObject[], 
+    ctx: CanvasRenderingContext2D | null | undefined)
+    {
+      predictions.forEach((detectedobjs: DetectedObject)=>
+      {
+        const {class: name , bbox ,score}= detectedobjs;
+        const [x,y,width,height]=bbox;
+        if(ctx)
+        {
+          ctx.beginPath();
+          if(name==='person')
+          {
+            ctx.fillStyle='#FF0F0F';
+          }
+          ctx.globalAlpha=0.4;
+          ctx.roundRect( x, y, width, height, 8);
+          ctx.fill();
+        }
+      })
+    }
+
