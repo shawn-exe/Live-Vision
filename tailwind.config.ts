@@ -9,7 +9,8 @@ const config: Config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+    'node_modules/flowbite-react/lib/esm/**/*.js'
   ],
   prefix: "",
   theme: {
@@ -61,6 +62,10 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontFamily:{
+        poppins: "Poppins",
+        Wallpoet: "Wallpoet",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -77,7 +82,8 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), nextui()],
+  plugins: [require("tailwindcss-animate"), nextui(), require('flowbite/plugin')]
+
 };
 
 export default config;
