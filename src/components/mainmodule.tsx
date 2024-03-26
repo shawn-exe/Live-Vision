@@ -5,6 +5,7 @@ import * as cocossd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs-backend-cpu";
 import "@tensorflow/tfjs-backend-webgl";
 import { DetectedObject, ObjectDetection } from '@tensorflow-models/coco-ssd';
+import alertsound from './alert/alertsound';
 
 type Props = {}
 let interval: any =null;
@@ -28,7 +29,7 @@ const MainModule = (props: Props) => {
     {
       const predictions: DetectedObject[] = await model.detect(webcamRef.current.video);
       canvaselement(canvasRef,webcamRef);
-      drawOnCanvas(predictions,canvasRef.current?.getContext('2d'))
+      drawOnCanvas(predictions,canvasRef.current?.getContext('2d'));
     }
   }
 
@@ -39,6 +40,7 @@ const MainModule = (props: Props) => {
       },100)
       return()=>clearInterval(interval);//To clear the previous intervals.. incase of reload
     },[webcamRef.current,model])
+    
   return (
     <div className='w-full flex flex-col items-center gap-2'>
         <div className='relative'> 
@@ -79,10 +81,14 @@ function drawOnCanvas(
           {
             ctx.fillStyle='#FF0F0F';
           }
+          // else
+          // {
+          //   ctx.fillStyle='GREEN'
+          // }
           ctx.globalAlpha=0.4;
-          ctx.roundRect( x, y, width, height, 8);
+          ctx.roundRect(ctx.canvas.width- x, y, -width, height, 8);
           ctx.fill();
         }
       })
-    }
+}
 

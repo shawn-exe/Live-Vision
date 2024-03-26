@@ -8,8 +8,13 @@ const Navbar = () => {
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-between items-center h-full">
             <Logo />
-            <ul className="flex gap-20 text-white">
+            <ul className="flex gap-8 text-white">
             <li>
+                <Link href="/">
+                  <p>home</p>
+                </Link>
+              </li>
+              <li>
                 <Link href="/">
                   <p>Product</p>
                 </Link>
@@ -20,7 +25,7 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/">
+                <Link href="/about">
                   <p>About Us</p>
                 </Link>
               </li>
