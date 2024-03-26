@@ -13,6 +13,9 @@ const MainModule = (props: Props) => {
     const webcamRef = useRef<Webcam>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [model,setModel]=useState<ObjectDetection>();
+    const [soundReady, setSoundReady]=useState<boolean>(true)
+    const [volume,setVolume]=useState<number>(0.8)
+
     useEffect(()=>
     {
       initModel();
@@ -30,6 +33,18 @@ const MainModule = (props: Props) => {
       const predictions: DetectedObject[] = await model.detect(webcamRef.current.video);
       canvaselement(canvasRef,webcamRef);
       drawOnCanvas(predictions,canvasRef.current?.getContext('2d'));
+
+      let isPerson: boolean = false;
+      if (predictions.length > 0) {
+        predictions.forEach((prediction) => {
+          isPerson = prediction.class === 'person';
+        })
+
+        if (isPerson && soundReady) {
+         // startsound(true);
+        }
+        //setSoundReady(false);
+      }
     }
   }
 
@@ -41,6 +56,12 @@ const MainModule = (props: Props) => {
       return()=>clearInterval(interval);//To clear the previous intervals.. incase of reload
     },[webcamRef.current,model])
     
+
+    function startsound(alert: boolean) {
+        alert && alertsound(volume);
+    }
+    
+
   return (
     <div className='w-full flex flex-col items-center gap-2'>
         <div className='relative'> 
@@ -51,6 +72,7 @@ const MainModule = (props: Props) => {
         </div>
     </div>
   )
+
 }
 
 export default MainModule
@@ -77,18 +99,12 @@ function drawOnCanvas(
         if(ctx)
         {
           ctx.beginPath();
-          if(name==='person')
-          {
-            ctx.fillStyle='#FF0F0F';
-          }
-          // else
-          // {
-          //   ctx.fillStyle='GREEN'
-          // }
+          ctx.fillStyle = name === 'person' ? '#00B612' : '#FF0F0F';
           ctx.globalAlpha=0.4;
           ctx.roundRect(ctx.canvas.width- x, y, -width, height, 8);
           ctx.fill();
         }
       })
 }
+
 
