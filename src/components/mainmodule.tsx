@@ -48,7 +48,7 @@ const MainModule = (props: Props) => {
         })
 
         if (isPerson && soundReady) {
-         // startsound(true);
+        //startsound(true);
         }
         //setSoundReady(false);
       }
