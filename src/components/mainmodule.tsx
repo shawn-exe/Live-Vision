@@ -1,6 +1,10 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
 import Webcam from 'react-webcam'
+import { Camera, Cctv, Video } from 'lucide-react'
+import { Button } from './ui/button'
+import { toast, useToast } from "@/components/ui/use-toast"
+import { Circles } from 'react-loader-spinner';
 import * as cocossd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs-backend-cpu";
 import "@tensorflow/tfjs-backend-webgl";
@@ -15,6 +19,9 @@ const MainModule = (props: Props) => {
     const [model,setModel]=useState<ObjectDetection>();
     const [soundReady, setSoundReady]=useState<boolean>(true)
     const [volume,setVolume]=useState<number>(0.8)
+    const [record,setrecord]=useState<boolean>(false);
+    const [isautorecord,setautorecord]=useState<boolean>(false);
+
 
     useEffect(()=>
     {
@@ -70,8 +77,42 @@ const MainModule = (props: Props) => {
             <canvas ref={canvasRef} className='h-full w-full absolute top-0 left-0 object-contain' ></canvas>
             </div>
         </div>
+        <div className='w-[400px] py-2 flex flex-row justify-center space-x-10 mb-2 border-secondary/5 border-2 shadow-md rounded-md'>
+             <Button variant={"default"} size={'icon'} >
+              <Camera />
+             </Button>
+             <Button variant={record ? "destructive" : "default"} size={'icon'} >
+              <Video />
+             </Button>
+             <Button variant={isautorecord ? "destructive" :"default"} size={'icon'} onClick={startautorecord}>
+             {isautorecord ? <Circles color='white' height={25}/> : <Cctv/>}
+             </Button>
+             
+        </div>
+
     </div>
   )
+
+  function startautorecord()
+  {
+      if(isautorecord)
+      {
+        setautorecord(false);
+        toast({
+          description: "AutoRecord Disabled",
+          variant:"default"
+        })
+      }
+      else
+      {
+        setautorecord(true);
+        toast({
+          description: "AutoRecord Enabled",
+          variant:"default"
+        })
+      }
+  }
+
 
 }
 

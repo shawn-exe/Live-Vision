@@ -11,7 +11,7 @@ export default function AboutPageOne() {
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex flex-col space-y-8 py-10">
           <p className="text-3xl font-bold text-gray-300 md:text-5xl md:leading-10">
-            Made with love, right here in Nitte
+          <span className='font-bold text-pink-600'>Designed</span> and <span className='font-bold text-pink-600'>Developed</span> right here in <span className='font-bold text-red-700'>Nitte</span>
           </p>
           <p className="w-full text-base font-poppins text-gray-400 ">
           At LiveVision, we leverage cutting-edge computer vision technology to empower users with accurate human and object detection capabilities. Our mission is to simplify complex visual recognition tasks, providing users with seamless and efficient solutions for a wide range of applications.
