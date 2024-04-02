@@ -1,7 +1,27 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import Navbar from '@/components/navbar'
 import Footer from '../../components/footer'
 function page() {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [subject, setSubject] = useState('');
+    const [message, setMessage] = useState('');
+
+    const handleSendButtonClick = () => {
+        const mailtoLink = constructMailtoLink();
+        window.location.href = mailtoLink;
+    };
+
+    const constructMailtoLink = () => {
+        const encodedName = encodeURIComponent(name);
+        const encodedEmail = encodeURIComponent(email);
+        const encodedSubject = encodeURIComponent(subject);
+        const encodedMessage = encodeURIComponent(message);
+
+        return `mailto:livevison@gmail.com?subject=${encodedSubject}&body=${encodedMessage}%0A%0D---%0A%0DName:%20${encodedName}%0A%0DEmail:%20${encodedEmail}`;
+    };
+
   return (
     <div className='w-full'>
         <Navbar/>
@@ -9,7 +29,7 @@ function page() {
                 <div className="w-1/2 h-3/4 grid sm:grid-cols-2 items-center gap-6 p-8  bg-white shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-l-medium text-[#333] font-[sans-serif]">
                     <div>
                         <h1 className="text-3xl font-extrabold">Let's Talk</h1>
-                        <p className="text-sm text-gray-400 mt-3">Have some big idea or brand to develop and need help? Then reach out we'd love to hear about your project  and provide help.</p>
+                        <p className="text-sm text-gray-400 mt-3">Have some big idea or need help? Then reach out we'd love to hear about your queries and provide help.</p>
                         <div className="mt-12">
                             <h2 className="text-lg font-extrabold">Email</h2>
                             <ul className="mt-3">
@@ -24,7 +44,7 @@ function page() {
                                     </div>
                                     <a target="blank" href="#" className="text-[#007bff] text-sm ml-3">
                                         <small className="block">Mail</small>
-                                        <strong>https://gmail.com</strong>
+                                        <strong>livevison@gmail.com</strong>
                                     </a>
                                 </li>
                             </ul>
@@ -66,47 +86,68 @@ function page() {
                         </div>
                     </div>
                   
-                    <form className="ml-auo space-y-4">
-                        <input type='text' placeholder='Name'
-                            className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#007bff]" />
-                        <input type='email' placeholder='Email'
-                            className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#007bff]" />
-                        <input type='text' placeholder='Subject'
-                            className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#007bff]" />
-                        <textarea placeholder='Message'
-                            className="w-full rounded-md px-4 border text-sm pt-2.5 outline-[#007bff]"></textarea>
-                        <button type='button'
-                            className="text-white bg-[#007bff] hover:bg-blue-600 font-semibold rounded-md text-sm px-4 py-2.5 w-full">Send</button>
-                    </form>
+                    <form id="contact-form" className="ml-auto space-y-4">
+                    <input
+                        type='text'
+                        placeholder='Name'
+                        className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#007bff]"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                    <input
+                        type='email'
+                        placeholder='Email'
+                        className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#007bff]"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <input
+                        type='text'
+                        placeholder='Subject'
+                        className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#007bff]"
+                        value={subject}
+                        onChange={(e) => setSubject(e.target.value)}
+                    />
+                    <textarea
+                        placeholder='Message'
+                        className="w-full rounded-md px-4 border text-sm pt-2.5 outline-[#007bff]"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                    ></textarea>
+                    <button
+                        type='button'
+                        className="text-white bg-[#007bff] hover:bg-blue-600 font-semibold rounded-md text-sm px-4 py-2.5 w-full"
+                        onClick={handleSendButtonClick}
+                    >
+                        Send
+                    </button>
+                </form>
                 </div>
 
                 <div
 				className="w-1/4 h-[40rem] px-8 py-12  bg-blue-900 rounded-2xl">
 				<div className="flex flex-col text-white">
-					<h1 className="font-bold uppercase text-4xl my-4">Drop in our office</h1>
-					<p className="text-gray-400">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-						tincidunt arcu diam,
-						eu feugiat felis fermentum id. Curabitur vitae nibh viverra, auctor turpis sed, scelerisque ex.
-					</p>
+                <h1 className="font-bold uppercase text-4xl my-4">Share your feedback</h1>
+<p className="text-gray-400">We value your opinion and welcome any feedback you may have regarding our services. Your input helps us strive for excellence and better serve our customers.</p>
 
-					<div className="flex my-4 w-2/3 lg:w-1/2">
+					<div className="flex my-10 w-full">
                             <div className="flex flex-col">
                                 <i className="fas fa-map-marker-alt pt-2 pr-2" />
                             </div>
                          <div className="flex flex-col">
-                         <h2 className="text-2xl">Main Office</h2>
-                         <p className="text-gray-400">5555 Tailwind RD, Pleasant Grove, UT 73533</p>
+                         <h2 className="text-2xl">Location: </h2>
+                         <p className="text-gray-400">Nitte, State Highway 1, Karkal, Karnataka 574110</p>
                          </div>
                     </div>
           
-                    <div className="flex my-4 w-2/3 lg:w-1/2">
+                    <div className="flex my-4 w-full space-y-1">
                         <div className="flex flex-col">
                         <i className="fas fa-phone-alt pt-2 pr-2" />
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col w-full">
                         <h2 className="text-2xl">Call Us</h2>
-                        <p className="text-gray-400">Tel: xxx-xxx-xxx</p>
-                        <p className="text-gray-400">Fax: xxx-xxx-xxx</p>
+                        <p className="text-gray-400">Tel: +91-6362857967</p>
+                        <p className="text-gray-400">Tel: +91-8769271890</p>
                         </div>
                     </div>
                 </div>
@@ -118,3 +159,4 @@ function page() {
 }
 
 export default page
+
