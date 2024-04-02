@@ -65,6 +65,7 @@ const config: Config = {
       fontFamily:{
         poppins: "Poppins",
         Wallpoet: "Wallpoet",
+        Cabin: "Cabin",
       },
       keyframes: {
         "accordion-down": {

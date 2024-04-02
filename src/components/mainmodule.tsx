@@ -13,14 +13,44 @@ import alertsound from './alert/alertsound';
 
 type Props = {}
 let interval: any =null;
+let stopTimeout: any = null;
 const MainModule = (props: Props) => {
     const webcamRef = useRef<Webcam>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [model,setModel]=useState<ObjectDetection>();
+    const [detectedObjectName, setDetectedObjectName] = useState('');
     const [soundReady, setSoundReady]=useState<boolean>(true)
     const [volume,setVolume]=useState<number>(0.8)
-    const [record,setrecord]=useState<boolean>(false);
-    const [isautorecord,setautorecord]=useState<boolean>(false);
+    const [isRecording, setIsRecording] = useState<boolean>(false);
+    const [autoRecordEnabled, setAutoRecordEnabled] = useState<boolean>(false)
+    const mediaRecorderRef = useRef<MediaRecorder|null> (null);
+
+    useEffect(() => {
+      if (webcamRef && webcamRef.current) {
+        const stream = (webcamRef.current.video as any).captureStream();
+        if (stream) {
+          mediaRecorderRef.current = new MediaRecorder(stream);
+  
+          mediaRecorderRef.current.ondataavailable = (e) => {
+            if (e.data.size > 0) {
+              const recordedBlob = new Blob([e.data], { type: 'video' });
+              const videoURL = URL.createObjectURL(recordedBlob);
+  
+              const a = document.createElement('a');
+              a.href = videoURL;
+              a.download = `${formatDate(new Date())}.webm`;
+              a.click();
+            }
+          };
+          mediaRecorderRef.current.onstart = (e) => {
+            setIsRecording(true);
+          }
+          mediaRecorderRef.current.onstop = (e) => {
+            setIsRecording(false);
+          }
+        }
+      }
+    }, [webcamRef])
 
 
     useEffect(()=>
@@ -41,10 +71,12 @@ const MainModule = (props: Props) => {
       canvaselement(canvasRef,webcamRef);
       drawOnCanvas(predictions,canvasRef.current?.getContext('2d'));
 
+
       let isPerson: boolean = false;
       if (predictions.length > 0) {
         predictions.forEach((prediction) => {
           isPerson = prediction.class === 'person';
+          setDetectedObjectName(prediction.class);
         })
 
         if (isPerson && soundReady) {
@@ -52,6 +84,7 @@ const MainModule = (props: Props) => {
         }
         //setSoundReady(false);
       }
+      
     }
   }
 
@@ -63,7 +96,7 @@ const MainModule = (props: Props) => {
       return()=>clearInterval(interval);//To clear the previous intervals.. incase of reload
     },[webcamRef.current,model])
     
-
+    
     function startsound(alert: boolean) {
         alert && alertsound(volume);
     }
@@ -81,23 +114,52 @@ const MainModule = (props: Props) => {
              <Button variant={"default"} size={'icon'} >
               <Camera />
              </Button>
-             <Button variant={record ? "destructive" : "default"} size={'icon'} >
+             <Button variant={isRecording ? "destructive" : "default"} size={'icon'} onClick={userPromptRecord} >
               <Video />
              </Button>
-             <Button variant={isautorecord ? "destructive" :"default"} size={'icon'} onClick={startautorecord}>
-             {isautorecord ? <Circles color='white' height={25}/> : <Cctv/>}
-             </Button>
-             
+             <Button variant={autoRecordEnabled ? "destructive" :"default"} size={'icon'} onClick={startautorecord}>
+             {autoRecordEnabled ? <Circles color='white' height={25}/> : <Cctv/>}
+             </Button>     
         </div>
-
+        <div className='text-white text-md w-[400px] py-2 flex flex-row justify-center items-center text-center font-Cabin '>Detected object : <span className='text-lg'>{detectedObjectName}</span></div>
     </div>
   )
 
+  function userPromptRecord() {
+
+    if (!webcamRef.current) {
+      console.log("camera is not on")
+    }
+    if (mediaRecorderRef.current?.state == 'recording') {
+      mediaRecorderRef.current.requestData();
+      clearTimeout(stopTimeout);
+      mediaRecorderRef.current.stop();  
+    } else { 
+      startRecording(false);
+      console.log("recording is stopped and saved");
+    }
+  }
+  function startRecording(doBeep: boolean) {
+    if (webcamRef.current && mediaRecorderRef.current?.state !== 'recording') {
+      mediaRecorderRef.current?.start();
+      doBeep && alertsound(volume);
+
+      stopTimeout = setTimeout(() => {
+        if (mediaRecorderRef.current?.state === 'recording') {
+          mediaRecorderRef.current.requestData();
+          mediaRecorderRef.current.stop();
+        }
+      }, 30000);
+    }
+  }
+
+
+
   function startautorecord()
   {
-      if(isautorecord)
+      if(autoRecordEnabled)
       {
-        setautorecord(false);
+        setAutoRecordEnabled(false);
         toast({
           description: "AutoRecord Disabled",
           variant:"default"
@@ -105,15 +167,13 @@ const MainModule = (props: Props) => {
       }
       else
       {
-        setautorecord(true);
+        setAutoRecordEnabled(true);
         toast({
           description: "AutoRecord Enabled",
           variant:"default"
         })
       }
   }
-
-
 }
 
 export default MainModule
@@ -142,10 +202,26 @@ function drawOnCanvas(
           ctx.beginPath();
           ctx.fillStyle = name === 'person' ? '#00B612' : '#FF0F0F';
           ctx.globalAlpha=0.4;
-          ctx.roundRect(ctx.canvas.width- x, y, -width, height, 8);
+          ctx.roundRect(ctx.canvas.width- x, y, -width, height, 1);
           ctx.fill();
         }
       })
 }
 
 
+function formatDate(d: Date) {
+  const formattedDate =
+    [
+      (d.getMonth() + 1).toString().padStart(2, "0"),
+      d.getDate().toString().padStart(2, "0"),
+      d.getFullYear(),
+    ]
+      .join("-") +
+    " " +
+    [
+      d.getHours().toString().padStart(2, "0"),
+      d.getMinutes().toString().padStart(2, "0"),
+      d.getSeconds().toString().padStart(2, "0"),
+    ].join("-");
+  return formattedDate;
+}
