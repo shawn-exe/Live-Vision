@@ -35,7 +35,6 @@ const MainModule = (props: Props) => {
             if (e.data.size > 0) {
               const recordedBlob = new Blob([e.data], { type: 'video' });
               const videoURL = URL.createObjectURL(recordedBlob);
-  
               const a = document.createElement('a');
               a.href = videoURL;
               a.download = `${formatDate(new Date())}.webm`;
@@ -111,10 +110,10 @@ const MainModule = (props: Props) => {
             </div>
         </div>
         <div className='w-[400px] py-2 flex flex-row justify-center space-x-10 mb-2 border-secondary/5 border-2 shadow-md rounded-md'>
-             <Button variant={"default"} size={'icon'} >
+             <Button variant={"default"} size={'icon'} onClick={clickphoto} >
               <Camera />
              </Button>
-             <Button variant={isRecording ? "destructive" : "default"} size={'icon'} onClick={userPromptRecord} >
+             <Button variant={isRecording ? "destructive" : "default"} size={'icon'} onClick={RecordVideo} >
               <Video />
              </Button>
              <Button variant={autoRecordEnabled ? "destructive" :"default"} size={'icon'} onClick={startautorecord}>
@@ -125,8 +124,7 @@ const MainModule = (props: Props) => {
     </div>
   )
 
-  function userPromptRecord() {
-
+  function RecordVideo() {
     if (!webcamRef.current) {
       console.log("camera is not on")
     }
@@ -139,6 +137,7 @@ const MainModule = (props: Props) => {
       console.log("recording is stopped and saved");
     }
   }
+
   function startRecording(doBeep: boolean) {
     if (webcamRef.current && mediaRecorderRef.current?.state !== 'recording') {
       mediaRecorderRef.current?.start();
@@ -174,6 +173,25 @@ const MainModule = (props: Props) => {
         })
       }
   }
+
+
+  function clickphoto() {
+    if(!webcamRef.current){
+      console.log("camera is not on")
+    }else{
+      const imgSrc = webcamRef.current.getScreenshot();
+      console.log(imgSrc);
+      const blob = base64toBlob(imgSrc);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${formatDate(new Date())}.png`
+      a.click();
+    }
+  }
+
+
+
 }
 
 export default MainModule
@@ -208,6 +226,15 @@ function drawOnCanvas(
       })
 }
 
+function base64toBlob(base64Data: any) {
+  const byteCharacters = atob(base64Data.split(",")[1]);
+  const arrayBuffer = new ArrayBuffer(byteCharacters.length);
+  const byteArray = new Uint8Array(arrayBuffer);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteArray[i] = byteCharacters.charCodeAt(i);
+  }
+  return new Blob([arrayBuffer], { type: "image/png" });
+}
 
 function formatDate(d: Date) {
   const formattedDate =
