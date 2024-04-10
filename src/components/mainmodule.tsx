@@ -51,6 +51,7 @@ const MainModule = (props: Props) => {
       }
     }, [webcamRef])
 
+
     useEffect(()=>
     {
       initModel();
@@ -68,6 +69,8 @@ const MainModule = (props: Props) => {
       const predictions: DetectedObject[] = await model.detect(webcamRef.current.video);
       canvaselement(canvasRef,webcamRef);
       drawOnCanvas(predictions,canvasRef.current?.getContext('2d'));
+
+
       let isPerson: boolean = false;
       if (predictions.length > 0) {
         predictions.forEach((prediction) => {
@@ -75,10 +78,16 @@ const MainModule = (props: Props) => {
           setDetectedObjectName(prediction.class);
         })
         if (isPerson && autoRecordEnabled) 
-        {
-          startRecording();
-        }
-      } 
+          {
+            startRecording();
+          }
+
+        // if (isPerson && soundReady) {
+        // //startsound(true);
+        // }
+        //setSoundReady(false);
+      }
+      
     }
   }
 
@@ -88,7 +97,9 @@ const MainModule = (props: Props) => {
         runPrediction();
       },100)
       return()=>clearInterval(interval);//To clear the previous intervals.. incase of reload
-    },[webcamRef.current,model,autoRecordEnabled])    
+    },[webcamRef.current,model,autoRecordEnabled])
+    
+    
     function startsound(alert: boolean) {
         alert && alertsound(volume);
     }
@@ -113,7 +124,7 @@ const MainModule = (props: Props) => {
              {autoRecordEnabled ? <Circles color='white' height={25}/> : <Cctv/>}
              </Button>     
         </div>
-        {model && <div className='text-white text-md w-[400px] py-2 flex flex-row justify-center items-center text-center font-Cabin '>Detected object : <span className='text-lg'>{detectedObjectName}</span></div>}
+        <div className='text-white text-md w-[400px] py-2 flex flex-row justify-center items-center text-center font-Cabin '>Detected object : <span className='text-lg'>{detectedObjectName}</span></div>
     </div>
   )
 
@@ -134,6 +145,7 @@ const MainModule = (props: Props) => {
   function startRecording() {
     if (webcamRef.current && mediaRecorderRef.current?.state !== 'recording') {
       mediaRecorderRef.current?.start();
+      
       stopTimeout = setTimeout(() => {
         if (mediaRecorderRef.current?.state === 'recording') {
           mediaRecorderRef.current.requestData();
@@ -180,6 +192,9 @@ const MainModule = (props: Props) => {
       a.click();
     }
   }
+
+
+
 }
 
 export default MainModule
