@@ -10,6 +10,7 @@ import "@tensorflow/tfjs-backend-cpu";
 import "@tensorflow/tfjs-backend-webgl";
 import { DetectedObject, ObjectDetection } from '@tensorflow-models/coco-ssd';
 import alertsound from './alert/alertsound';
+import { Slider } from './ui/slider'
 
 type Props = {}
 let interval: any =null;
@@ -19,7 +20,6 @@ const MainModule = (props: Props) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [model,setModel]=useState<ObjectDetection>();
     const [detectedObjectName, setDetectedObjectName] = useState('');
-    const [soundReady, setSoundReady]=useState<boolean>(true)
     const [volume,setVolume]=useState<number>(0.8)
     const [isRecording, setIsRecording] = useState<boolean>(false);
     const [autoRecordEnabled, setAutoRecordEnabled] = useState<boolean>(false)
@@ -41,6 +41,9 @@ const MainModule = (props: Props) => {
               a.click();
             }
           };
+
+          //The below 2 lines are necessary for the colour effect
+          //on the video button
           mediaRecorderRef.current.onstart = (e) => {
             setIsRecording(true);
           }
@@ -64,13 +67,12 @@ const MainModule = (props: Props) => {
 
   async function runPrediction()
   {
+    console.log(webcamRef.current);
     if(model && webcamRef.current && webcamRef.current.video && webcamRef.current.video.readyState === 4)
     {
       const predictions: DetectedObject[] = await model.detect(webcamRef.current.video);
       canvaselement(canvasRef,webcamRef);
       drawOnCanvas(predictions,canvasRef.current?.getContext('2d'));
-
-
       let isPerson: boolean = false;
       if (predictions.length > 0) {
         predictions.forEach((prediction) => {
@@ -79,15 +81,9 @@ const MainModule = (props: Props) => {
         })
         if (isPerson && autoRecordEnabled) 
           {
-            startRecording();
+            startRecording(true);
           }
-
-        // if (isPerson && soundReady) {
-        // //startsound(true);
-        // }
-        //setSoundReady(false);
-      }
-      
+      }  
     }
   }
 
@@ -99,11 +95,6 @@ const MainModule = (props: Props) => {
       return()=>clearInterval(interval);//To clear the previous intervals.. incase of reload
     },[webcamRef.current,model,autoRecordEnabled])
     
-    
-    function startsound(alert: boolean) {
-        alert && alertsound(volume);
-    }
-    
 
   return (
     <div className='w-full flex flex-col items-center gap-2'>
@@ -113,7 +104,7 @@ const MainModule = (props: Props) => {
             <canvas ref={canvasRef} className='h-full w-full absolute top-0 left-0 object-contain' ></canvas>
             </div>
         </div>
-        <div className='w-[400px] py-2 flex flex-row justify-center space-x-10 mb-2 border-secondary/5 border-2 shadow-md rounded-md'>
+        <div className='w-[800px] py-2 flex flex-row justify-center space-x-10 gap-3 border-secondary/5 border-2 shadow-md rounded-md'>
              <Button variant={"default"} size={'icon'} onClick={clickphoto} >
               <Camera />
              </Button>
@@ -122,9 +113,19 @@ const MainModule = (props: Props) => {
              </Button>
              <Button variant={autoRecordEnabled ? "destructive" :"default"} size={'icon'} onClick={startautorecord}>
              {autoRecordEnabled ? <Circles color='white' height={25}/> : <Cctv/>}
-             </Button>     
+             </Button> 
+             <Slider  
+                  max={1}
+                  min={0}
+                  step={0.2}
+                  defaultValue={[volume]}
+                  onValueCommit={(val) => {
+                    setVolume(val[0]);
+                    alertsound(val[0]);
+                  }}
+                />    
         </div>
-        <div className='text-white text-md w-[400px] py-2 flex flex-row justify-center items-center text-center font-Cabin '>Detected object : <span className='text-lg'>{detectedObjectName}</span></div>
+        <div className='text-white text-md w-[400px] flex flex-row justify-center items-center text-center font-Cabin '>Detected object : <span className='text-xl font-bold'>{detectedObjectName}</span></div>
     </div>
   )
 
@@ -137,15 +138,15 @@ const MainModule = (props: Props) => {
       clearTimeout(stopTimeout);
       mediaRecorderRef.current.stop();  
     } else { 
-      startRecording();
+      startRecording(false);
       console.log("recording is stopped and saved");
     }
   }
 
-  function startRecording() {
+  function startRecording(makesound: boolean) {
     if (webcamRef.current && mediaRecorderRef.current?.state !== 'recording') {
       mediaRecorderRef.current?.start();
-      
+      makesound && alertsound(volume)  
       stopTimeout = setTimeout(() => {
         if (mediaRecorderRef.current?.state === 'recording') {
           mediaRecorderRef.current.requestData();
@@ -154,8 +155,6 @@ const MainModule = (props: Props) => {
       }, 20000);
     }
   }
-
-
 
   function startautorecord()
   {
