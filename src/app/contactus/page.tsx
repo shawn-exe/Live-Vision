@@ -53,7 +53,7 @@ function page() {
                             <h2 className="text-lg font-extrabold">Socials</h2>
                             <ul className="flex mt-3 space-x-4">
                                 <li className="bg-[#e6e6e6cf] h-10 w-10 rounded-full flex items-center justify-center shrink-0">
-                                    <a href="javascript:void(0)">
+                                    <a href="https://www.linkedin.com/in/shawnxsalis/">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill='#007bff'
                                             viewBox="0 0 24 24">
                                             <path
@@ -63,7 +63,7 @@ function page() {
                                     </a>
                                 </li>
                                 <li className="bg-[#e6e6e6cf] h-10 w-10 rounded-full flex items-center justify-center shrink-0">
-                                    <a href="javascript:void(0)">
+                                    <a href="https://www.linkedin.com/in/shawnxsalis/">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill='#007bff'
                                             viewBox="0 0 511 512">
                                             <path
@@ -73,7 +73,7 @@ function page() {
                                     </a>
                                 </li>
                                 <li className="bg-[#e6e6e6cf] h-10 w-10 rounded-full flex items-center justify-center shrink-0">
-                                    <a href="javascript:void(0)">
+                                    <a href="https://github.com/shawn-exe">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill='#007bff'
                                             viewBox="0 0 24 24">
                                             <path

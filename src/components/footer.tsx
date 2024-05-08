@@ -25,23 +25,23 @@ export default function Reactfooter() {
             <div className='flex p-0 flex-col justify-center items-center'>
               <Footer.Title title="Follow us" />
               <Footer.LinkGroup col>
-                <Footer.Link href="#">Github</Footer.Link>
-                <Footer.Link href="#">LinkedIn</Footer.Link>
+                <Footer.Link href="https://github.com/shawn-exe">Github</Footer.Link>
+                <Footer.Link href="https://www.linkedin.com/in/shawnxsalis/">LinkedIn</Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div className='flex p-0 flex-col justify-center items-center pr-3'>
             <Footer.Title title="Social handles" />
                 <div className=" flex space-x-6 sm:mt-0 sm:justify-center">
-                <Footer.Icon href="#" icon={BsInstagram} />
-                <Footer.Icon href="#" icon={BsTwitter} />
-                <Footer.Icon href="#" icon={BsGithub} />
+                <Footer.Icon href="https://github.com/shawn-exe" icon={BsInstagram} />
+                <Footer.Icon href="https://github.com/shawn-exe" icon={BsTwitter} />
+                <Footer.Icon href="https://github.com/shawn-exe" icon={BsGithub} />
             </div>
             </div>
           </div>
         </div>
         <Footer.Divider />
         <div className='w-full text-center p-0'>
-          <Footer.Copyright href="#" by="livevisionDEV" year={2022} />
+          <Footer.Copyright href="#" by="livevisionDEV" year={2024} />
         </div>
       </div>
     </Footer>

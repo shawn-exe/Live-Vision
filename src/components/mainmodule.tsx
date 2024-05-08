@@ -67,7 +67,6 @@ const MainModule = (props: Props) => {
 
   async function runPrediction()
   {
-    console.log(webcamRef.current);
     if(model && webcamRef.current && webcamRef.current.video && webcamRef.current.video.readyState === 4)
     {
       const predictions: DetectedObject[] = await model.detect(webcamRef.current.video);
@@ -76,6 +75,7 @@ const MainModule = (props: Props) => {
       let isPerson: boolean = false;
       if (predictions.length > 0) {
         predictions.forEach((prediction) => {
+          console.log(prediction);
           isPerson = prediction.class === 'person';
           setDetectedObjectName(prediction.class);
         })
@@ -181,8 +181,7 @@ const MainModule = (props: Props) => {
     if(!webcamRef.current){
       console.log("camera is not on")
     }else{
-      const imgSrc = webcamRef.current.getScreenshot();
-      console.log(imgSrc);
+      const imgSrc = webcamRef.current.getScreenshot();  
       const blob = base64toBlob(imgSrc);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
